@@ -50,6 +50,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: exampleSite
+          submodules: recursive
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
