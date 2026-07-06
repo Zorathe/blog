@@ -1,0 +1,58 @@
+baseURL: https://zorathe.github.io/
+locale: en-us
+title: "Zorathe's Blog"
+theme: PaperMod
+params:
+  openLinksInNewTab: true
+  displayDateFormat: "Jan 2, 2006"
+  ShowBreadCrumbs: true
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowToc: true
+  TocOpen: false
+  hostname: "Zorathe's Blog"
+  homeInfoParams:
+    Title: Welcome to Zorathe's Blog
+    Content: This is where I will be writing my notes.
+  socialIcons:
+    - name: facebook
+      url: https://facebook.com/
+    - name: X
+      url: https://x.com
+    - name: github
+      url: https://github.com/zorathe
+  author: "Author: Zorathe"
+  styles:
+    color: red
+#  social:
+#    - key: 0
+#     name: github
+#      url: https://github.com/zorathe
+#      icon: fa-brands fa-github
+#      target: _blank
+#      aria: Github Profile
+#    - key: 1
+#      name: twitter
+#      url: https://x.com
+#    - key: 2
+#      name: email
+#      url: dathomaschen@protonmail.com
+#  assets:
+#    disableFingerprinting: true
+pagination:
+  pagerSize: 3
+menu:
+  main:
+    - identifier: Posts
+      name: Posts
+      weight: 10
+      url: /Posts
+    - identifier: Archive
+      name: Archive
+      weight: 20
+      url: /archive
+    - identifier: Tags
+      name: Tags
+      weight: 30
+      url: /tags
