@@ -3,7 +3,7 @@
 date = '2026-07-04T01:47:39-04:00'
 draft = false
 title = 'Second'
-tags = ["hugo", "bluey"]
+tags = ["CoT", "GAN"]
 +++
 
 

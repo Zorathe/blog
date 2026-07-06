@@ -41,7 +41,7 @@ params:
 #  assets:
 #    disableFingerprinting: true
 pagination:
-  pagerSize: 3
+  pagerSize: 10
 menu:
   main:
     - identifier: Posts
