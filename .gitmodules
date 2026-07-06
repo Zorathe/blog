@@ -1,0 +1,4 @@
+[submodule "zorathesblog/public"]
+	path = zorathesblog/public
+	url = https://github.com/Zorathe/zorathe.github.io
+	branch = main
