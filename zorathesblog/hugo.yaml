@@ -1,6 +1,6 @@
 baseURL: https://zorathe.github.io/
 locale: en-us
-title: "Zorathe's Blog"
+title: "The Zorathe's Blog"
 theme: PaperMod
 params:
   openLinksInNewTab: true
@@ -13,7 +13,7 @@ params:
   TocOpen: false
   hostname: "Zorathe's Blog"
   homeInfoParams:
-    Title: Welcome to Zorathe's Blog
+    Title: Welcome to Zorathe's Blog 3
     Content: This is where I will be writing my notes.
   socialIcons:
     - name: facebook
