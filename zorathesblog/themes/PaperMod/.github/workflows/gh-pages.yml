@@ -49,7 +49,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: exampleSite
+          ref: main
           submodules: recursive
       - name: Setup Pages
         id: pages
@@ -68,7 +68,7 @@ jobs:
         run: |
         echo "Checking index.html" 
         grep integrity public/index.html
-        
+
         echo "Checking CSS hash"
         sha256sum public/assets/css/*.css
 
