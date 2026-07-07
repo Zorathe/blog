@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CoT on The Zorathe's Blog</title><link>https://zorathe.github.io/tags/cot/</link><description>Recent content in CoT on The Zorathe's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 04 Jul 2026 01:47:39 -0400</lastBuildDate><atom:link href="https://zorathe.github.io/tags/cot/index.xml" rel="self" type="application/rss+xml"/><item><title>Second</title><link>https://zorathe.github.io/posts/second/</link><pubDate>Sat, 04 Jul 2026 01:47:39 -0400</pubDate><guid>https://zorathe.github.io/posts/second/</guid><description>&lt;p&gt;This is the second posts of the blog&lt;/p&gt;
+&lt;p&gt;Check check check
+Creating a Blog Post With an Archetype
+&lt;a href="https://www.staticguide.org/chapter-6-customizing-your-hugo-website/"&gt;https://www.staticguide.org/chapter-6-customizing-your-hugo-website/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Let’s take a look at how it works. Enter the following command to create a new blog post from the archetype:&lt;/p&gt;
+&lt;p&gt;hugo new posts/my-newest-post.md&lt;/p&gt;
+&lt;p&gt;Check out the &lt;a href="https://google.com/"&gt;Google Docs&lt;/a&gt; for more information&lt;/p&gt;
+&lt;h2 id="this-is-the-first-section"&gt;This is the first section&lt;/h2&gt;
+&lt;p&gt;The first part of the command (hugo new) tells Hugo to create a new file using the posts.md archetype in the location we specify in the second part of the command (posts/my-newest-post.md). If everything works, you should see the following output&lt;/p&gt;</description></item></channel></rss>
