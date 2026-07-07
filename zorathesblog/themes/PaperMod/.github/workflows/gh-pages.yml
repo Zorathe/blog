@@ -62,7 +62,9 @@ jobs:
         run: |
           hugo \
             --buildDrafts --gc \ --minify
+            --baseURL "https://zorathe.github.io/"
 #            --baseURL ${{ steps.pages.outputs.base_url }}
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
