@@ -1,6 +1,6 @@
 +++
 #type = "post"
-url = "/blog/firstpost/"
+#url = "/posts/myposts.md"
 date = '2026-07-03T07:05:59-04:00'
 draft = false
 title = 'Introduction to the blog'
