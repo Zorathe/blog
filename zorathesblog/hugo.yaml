@@ -38,8 +38,8 @@ params:
 #    - key: 2
 #      name: email
 #      url: dathomaschen@protonmail.com
-#  assets:
-#    disableFingerprinting: true
+  assets:
+    disableFingerprinting: true
 pagination:
   pagerSize: 10
 menu:
