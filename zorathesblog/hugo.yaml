@@ -23,8 +23,8 @@ params:
     - name: github
       url: https://github.com/zorathe
   author: "Author: Zorathe"
-  styles:
-    color: red
+#  styles:
+#    color: red
 #  social:
 #    - key: 0
 #     name: github
