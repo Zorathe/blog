@@ -72,6 +72,17 @@ jobs:
         echo "Checking CSS hash"
         sha256sum public/assets/css/*.css
 
+      - name: Debug generated site
+        run: |
+          echo "Generated index integrity:"
+          grep integrity public/index.html || true
+
+          echo "Generated CSS hash:"
+          sha256sum public/assets/css/*.css || true
+
+          echo "Files:"
+          ls -la public/assets/css
+
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
