@@ -13,8 +13,8 @@ params:
   TocOpen: false
   hostname: "Zorathe's Blog"
   homeInfoParams:
-    Title: Welcome to Zorathe's Blog 3
-    Content: This is where I will be writing my notes.
+    Title: Welcome to Zorathe's Blog 
+    Content: Hey, this is Zorathe. This is where I will be writing my notes since 2026.
   socialIcons:
     - name: facebook
       url: https://facebook.com/
