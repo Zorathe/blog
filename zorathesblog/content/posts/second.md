@@ -2,19 +2,20 @@
 #type = "post"
 date = '2026-07-04T01:47:39-04:00'
 draft = false
-title = 'Second'
-tags = ["CoT", "GAN"]
+title = 'Writing a Shell'
+tags = ["Shell", "GAN"]
 +++
 
+There are three main actions a shell takes from a top down perspective:
+    * Read: The shell reads the command.
+    * Parese: The shell breaks down the command string into what is a program and what are its arguments.
+    * Execute: The shell runs the command
 
-This is the second posts of the blog
 
-
-Check check check
 Creating a Blog Post With an Archetype
 https://www.staticguide.org/chapter-6-customizing-your-hugo-website/
 
-
+https://brennan.io/2015/01/16/write-a-shell-in-c/
 Let’s take a look at how it works. Enter the following command to create a new blog post from the archetype:
 
 hugo new posts/my-newest-post.md
