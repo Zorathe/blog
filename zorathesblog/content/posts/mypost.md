@@ -264,6 +264,7 @@ FFT Size	Frequency Resolution
 4096	        10.8 Hz
 8192	        5.38 Hz
 ```
+
 A larger FFT gives you more precise frequency information.
 
 However, it requires a longer chunk of audio.
