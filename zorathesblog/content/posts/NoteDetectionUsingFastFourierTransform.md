@@ -9,10 +9,7 @@ tags = ["FFT", "Fast Fourier Transform", "Signal and Systems"]
     caption = '' 
 +++
 
-
-## How FFT Works in a Note Detector
-
-An FFT (Fast Fourier Transform) is one of the most useful tools for building a **note detector** because it converts a short chunk of audio from the **time domain** into the **frequency domain**.
+The Fast Fourier Transform (FFT) is one of the most powerful tools for building a **note detector** because it converts a short chunk of audio from the **time domain** into the **frequency domain**.
 
 The frequency domain makes it possible to determine which frequencies are present in the audio and use that information to estimate the musical note being played.
 
