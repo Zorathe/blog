@@ -2,7 +2,7 @@
 #type = "post"
 #url = "/posts/myposts.md"
 date = '2026-07-03T07:05:59-04:00'
-draft = false
+draft = true
 title = 'Note Detection Using Fast Fourier Transform'
 tags = ["FFT", "Fast Fourier Transform", "Signal and Systems"]
 [cover] 

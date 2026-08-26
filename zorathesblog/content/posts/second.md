@@ -3,7 +3,7 @@
 date = '2026-07-04T01:47:39-04:00'
 draft = false
 title = 'Writing a Shell'
-tags = ["Shell", "GAN"]
+tags = ["Shell", "POSIX"]
 +++
 
 The shell is a program which allows users to interact with the operating system through a command-line interface (CLI).
