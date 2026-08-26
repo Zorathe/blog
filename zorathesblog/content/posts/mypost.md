@@ -312,7 +312,7 @@ However, it does not provide four times as much frequency information.
 It effectively interpolates the spectrum.
 
 The true frequency resolution is still primarily determined by the duration of the original audio window.
-
+ 
 So:
 
 Zero padding
