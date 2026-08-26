@@ -23,11 +23,11 @@ For example, an **A4** has a fundamental frequency of approximately **440 Hz**.
 
 ## Start with the Microphone Signal
 
-A microphone produces a stream of audio samples representing the air pressure changes caused by sound.
+A microphone takes in audio input by measuring the changes in air pressure. 
 
-Conceptually, the waveform looks like:
+For example, take this waveform:
 
-``` text
+``` 
 amplitude
    ^
    |    /\      /\      /\
@@ -40,22 +40,18 @@ If the audio is sampled at 44,100 samples per second, the microphone produces:
 ```
 x[0], x[1], x[2], ... x[N-1]
 ```
-You normally don't run the FFT on the entire recording.
 
-Instead, you take a short section of audio called a window.
+To get a proper representation of the signal, you have to sample a part of the incoming signal. 
 
 For example:
 
 44,100 samples/sec × 0.0464 sec ≈ 2048 samples
 
-So a common approach is to feed 2048 samples into the FFT at a time.
-
+Using this, we can feed 2048 samples into the FFT at a particular time.
 
 ## What the FFT Does
 
-Conceptually, the FFT asks:
-
-How much of each frequency is present in these audio samples?
+The FFT takes the audio samples and breaks them up into their individual frequencies. 
 
 The original audio is in the time domain:
 
@@ -81,9 +77,9 @@ The peak around 440 Hz indicates that there is strong energy at approximately 44
 
 ## FFT Frequency Bins
 
-The FFT divides the frequency range into discrete frequency bins.
+The FFT divides the frequency range into frequency bins.
 
-The frequency spacing between bins is:
+The spacing between bins is defined as:
 
 Δf=Fs/N
 
@@ -114,8 +110,8 @@ Bin 21 → 452.2 Hz
 ...
 ```
 
+Notice that each bin is a multiple of Δf. 
 An A4 at 440 Hz falls between bins 20 and 21.
-
 This is why a simple FFT doesn't necessarily give you an exact frequency.
 
 ## Estimating the Actual Frequency
@@ -491,132 +487,18 @@ Smoothed:
 440.0
 ```
 The detector can also require a note to remain stable for several frames before changing the displayed note.
-## Confidence
 
-A useful note detector should ideally provide a confidence value.
+## Conclusion
 
-For example:
-```
-Frequency: 440.3 Hz
-Note:      A4
-Confidence: 96%
-```
-But if the signal is noisy:
-```
-Frequency: 437.8 Hz
-Note:      A4
-Confidence: 41%
-```
-This can prevent the application from displaying a random note when there isn't enough evidence.
+The FFT does not detect musical notes. It deconstructs the signal into its individual frequencies. 
 
-Confidence can be based on things such as:
+The note detector analysis those frequencies and determines which fundamental frequency best represents each one. 
 
-    Strength of the fundamental
-    Harmonic consistency
-    Signal-to-noise ratio
-    Stability across multiple frames
-    Difference between the best and second-best candidates
-
-## Complete Conceptual Architecture
-
-A more complete detector might look like:
-
-                    MICROPHONE
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Audio Capture │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Ring Buffer   │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Audio Window  │
-                │ e.g. 2048     │
-                │ samples       │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Hann Window   │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │      FFT      │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Magnitude     │
-                │ Spectrum      │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Peak Detection│
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Fundamental   │
-                │ Estimation    │
-                └───────┬───────┘
-                        │
-                        ▼
-                  e.g. 440.2 Hz
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Frequency →   │
-                │ MIDI Note     │
-                └───────┬───────┘
-                        │
-                        ▼
-                    MIDI 69
-                        │
-                        ▼
-                       A4
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Temporal      │
-                │ Smoothing     │
-                └───────┬───────┘
-                        │
-                        ▼
-                ┌───────────────┐
-                │ Note + Cents  │
-                │ + Confidence  │
-                └───────────────┘
-
-## The Most Important Idea
-
-The FFT itself does not detect musical notes.
-
-The FFT answers:
-
-    "What frequencies are present in this audio?"
-
-The note detector answers:
-
-    "Which fundamental frequency best explains those frequencies?"
-
-And finally, the musical mapping answers:
-
-    "Which note is closest to that fundamental frequency?"
+The musical mapping then maps those fundamental frequencies to a corresponding musical note.
 
 So the overall process is:
 
 ![FFT Flowchart](/FFT-flowchart-block.png)
-
-
-## Conclusion 
-The key insight is that the FFT provides the spectral evidence, while the note-detection algorithm interprets that evidence to determine the fundamental pitch.
 
 
 
