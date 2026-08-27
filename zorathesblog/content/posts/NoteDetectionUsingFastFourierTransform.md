@@ -21,16 +21,7 @@ For example, an **A4** has a fundamental frequency of approximately **440 Hz**.
 
 A microphone takes in audio input by measuring the changes in air pressure. 
 
-For example, take this waveform:
 
-``` 
-amplitude
-   ^
-   |    /\      /\      /\
-   |   /  \    /  \    /  \
----+--/----\--/----\--/----\----> time
-
-```
 
 If the audio is sampled at 44,100 samples per second, the microphone produces:
 ```
@@ -45,31 +36,13 @@ For example:
 
 Using this, we can feed 2048 samples into the FFT at a particular time.
 
+
 ## What the FFT Does
 
-The FFT takes the audio samples and breaks them up into their individual frequencies. 
+The FFT takes the audio samples which is in time domain and converts them to frequency domain. This allows the audio samples to be broken down into its individual frequencies.
 
-The original audio is in the time domain:
+![FFT](/FFT-convert.jpg)
 
-```
-amplitude
-   ^
-   |    /\      /\      /\
-   |   /  \    /  \    /  \
----+--/----\--/----\--/----\----> time
-```
-The FFT transforms it into the frequency domain:
-```
-magnitude
-   ^
-   |           /\
-   |          /  \
-   |         /    \
-   |________/______\______________> frequency
-             440 Hz
-```
-
-The peak around 440 Hz indicates that there is strong energy at approximately 440 Hz.
 
 ## FFT Frequency Bins
 
@@ -109,27 +82,6 @@ Bin 21 → 452.2 Hz
 Notice that each bin is a multiple of Δf. 
 An A4 at 440 Hz falls between bins 20 and 21.
 This is why a simple FFT doesn't necessarily give you an exact frequency.
-
-## Estimating the Actual Frequency
-
-Suppose the FFT produces this:
-```
-magnitude
-   ^
-   |                  /\
-   |                 /  \
-   |                /    \
-   |_______________/______\____________
-                  431    452
-                    frequency
-```
-The actual frequency may be somewhere around:
-
-440 Hz
-
-rather than exactly at one of the FFT bins.
-
-A good note detector can use peak interpolation to estimate the frequency more accurately than simply selecting the nearest FFT bin.
 
 ## Converting Frequency to a Musical Note
 
@@ -172,27 +124,13 @@ If someone plays A4, whose fundamental is approximately 440 Hz, the sound may co
 1320 Hz  ← 3rd harmonic
 1760 Hz  ← 4th harmonic
 2200 Hz  ← 5th harmonic
-...
 ```
-The FFT might therefore look something like:
-magnitude
-```
-   ^
-   |       /\ 
-   |      /  \             /\
-   |     /    \           /  \
-   |    /      \    /\   /    \
-   |___/________\__/__\_/______\____> frequency
-      440      880 1320 1760
-       ↑
-   fundamental
-```   
 
-These additional frequencies are called harmonics.
+Notice that each subsequent harmonic is a multiple of the fundamental frequency.
 
 ## Why the Largest FFT Peak Isn't Always the Note
 
-A naive detector might do this:
+A basic note detector might:
 
 1. Run FFT
 2. Find largest peak
@@ -200,46 +138,37 @@ A naive detector might do this:
 
 This can fail.
 
-For example, suppose the fundamental at 440 Hz is relatively quiet but the second harmonic at 880 Hz is very strong.
-
-The FFT could show:
-
-440 Hz  → moderate
-880 Hz  → very strong
-1320 Hz → strong
+For example, a musician plays the note A4 which produces a 440Hz sound which is relatively quiet but a second harmonic at 880 Hz which is the loudest frequency picked up.
 
 A naive detector might conclude:
+```
 880 Hz → A5
+```
+
 But the musician actually played:
+```
 440 Hz → A4
-Therefore, a practical note detector needs to reason about harmonic relationships, not just the strongest frequency.
+```
+The 880Hz is the second harmonic of the 440Hz fundamental. 
+
+Therefore, a practical note detector needs to take in the harmonic relationships into account, not just the strongest frequency.
 
 ## Detecting the Fundamental
 
-One useful strategy is to look for a frequency f whose multiples also appear in the spectrum.
+Taking into account the harmonic relationships, look at a frequency f and its multiples that may appear in the spectrum.
 
-For example:
+Using the example from earlier:
 ```
 f       = 440 Hz
 2f      = 880 Hz
 3f      = 1320 Hz
 4f      = 1760 Hz
 ```
-If all of these frequencies have significant energy, that provides strong evidence that:
-```
-fundamental = 440 Hz
-```
-the detector can therefore search for a frequency whose harmonic series best matches the observed spectrum.
+Since 2f = 880 Hz, 880Hz is a multiple of the 440Hz fundamental so the note detector should output A4.
 
-Conceptually:
-```
-         Observed spectrum
-440 Hz   █████████
-880 Hz   ███████
-1320 Hz  █████
-1760 Hz  ████
-```
-This is much stronger evidence than simply looking for the largest peak.
+Using this relationship, the detector can search for a frequency whose harmonic series best matches the observed spectrum.
+
+This is much stronger evidence than looking for the largest peak.
 
 ## Frequency Resolution vs. Time Resolution
 
@@ -289,51 +218,12 @@ Longer delay
 Better frequency resolution
 ```
 A real-time note detector needs to choose an appropriate compromise.
-## Zero Padding
 
-You may see FFT implementations that take a relatively small audio window and append zeros before calculating the FFT.
+## Hann Window
 
-For example:
-```
-2048 audio samples
-        ↓
-append zeros
-        ↓
-8192-point FFT
-```
-Zero padding produces more closely spaced FFT output points.
+When performing the FFT, the FFT may produce some unwanted artifacts in the form of spectral leakage. This is where the Hann window function comes in handy. The Hann window function reduces that aliases by smoothing the signal.  
 
-However, it does not provide four times as much frequency information.
-
-It effectively interpolates the spectrum.
-
-The true frequency resolution is still primarily determined by the duration of the original audio window.
- 
-So:
-
-Zero padding
-     ≠
-More actual information
-
-It can nevertheless make peak estimation easier because the spectrum is sampled more densely.
-## Window Functions
-
-Another important part of FFT processing is applying a window function before calculating the FFT.
-
-Suppose we take a section of a continuous waveform:
-```
-|----------------|
-^                ^
-start            end
-```
-The FFT effectively treats the selected section as if it repeats.
-
-If the waveform doesn't line up perfectly at the boundaries, the artificial discontinuity creates additional frequencies.
-
-This produces spectral leakage.
-Hann Window
-
-A common solution is to multiply the samples by a Hann window.
+Mathematically, this is done by multiplying the samples by a Hann window. 
 
 The Hann window is:
 ```
@@ -343,22 +233,16 @@ The audio samples are then multiplied by the window:
 ```
 xw[n]=x[n]w[n]
 ```
-Conceptually:
-```
-Original audio:
+In essence :
 
-████████████████████████
+![Hann Window](/hann-window.jpg)
 
-Hann window:
-
-  ▂▃▅██████████████▅▃▂
-```
 The ends of the window smoothly approach zero.
 
 This generally produces cleaner FFT peaks and reduces spectral leakage.
 ## A Basic FFT Note Detector Pipeline
 
-A simple FFT-based detector can follow this pipeline:
+Putting it all together, a simple FFT-based detector may have this structure:
 ```
 Microphone
     ↓
@@ -382,70 +266,7 @@ Convert MIDI → note name
     ↓
 C4, D4, A4, etc.
 ```
-A more sophisticated detector can additionally perform:
-```
-Peak interpolation
-Harmonic analysis
-Noise rejection
-Amplitude thresholding
-Temporal smoothing
-Confidence estimation
-```
-## FFT Output and Magnitude
 
-The FFT produces complex numbers.
-
-For each frequency bin, the FFT gives something like:
-```
-X[k]=a+bi
-```
-The magnitude of that frequency component is:
-```
-∣X[k]∣=a2+b2
-```
-For a note detector, the magnitude is usually what we care about when looking for frequency peaks.
-
-A spectrum can therefore be represented as:
-```
-Frequency       Magnitude
-
-100 Hz             ██
-200 Hz             ███
-300 Hz             ██
-400 Hz             █████████
-500 Hz             ███
-600 Hz             ██
-...
-```
-The peaks provide information about the frequencies present in the sound.
-## Real-Time Processing
-
-A real-time note detector doesn't necessarily process one window and then wait for the next one.
-
-Instead, it can use overlapping windows.
-
-For example:
-```
-Window 1:
-████████████████
-
-Window 2:
-        ████████████████
-
-Window 3:
-                ████████████████
-```
-If the FFT size is 2048 samples, you might advance by only 512 samples each time.
-
-This gives:
-
-FFT size:    2048 samples
-Hop size:     512 samples
-Overlap:       75%
-
-The detector can therefore produce frequent updates while still getting the frequency resolution of a 2048-sample FFT.
-
-This is particularly useful for real-time tuners and musical instruments.
 ## Smoothing the Detected Note
 
 The detected frequency can jump around from one FFT window to another.
@@ -466,22 +287,22 @@ For example:
 
 Raw frequency:
 ```
-439.2
-441.1
-438.7
-440.5
-439.8
-442.0
-438.9
+439.2 Hz
+441.1 Hz
+438.7 Hz
+440.5 Hz
+439.8 Hz
+442.0 Hz
+438.9 Hz
 ```
 
 Smoothed:
 ```
-439.8
-440.0
-439.9
-440.1
-440.0
+439.8 Hz
+440.0 Hz
+439.9 Hz
+440.1 Hz
+440.0 Hz
 ```
 The detector can also require a note to remain stable for several frames before changing the displayed note.
 
